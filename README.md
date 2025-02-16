@@ -1,8 +1,16 @@
-#
+# Guide
 
-See https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html
+See <https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html>
+
+## Steps Before Running Build
+
+```bash
+source poky/oe-init-build-env .
+```
 
 Initialise build environment:
+
+## Initialisa New Confguration
 
 ```bash
 source poky/oe-init-build-env .
@@ -10,7 +18,7 @@ source poky/oe-init-build-env .
 
 Change absolute paths to `${TOPDIR}`:
 
-```
+```ini
 (...)
 BBLAYERS ?= " \
   ${TOPDIR}/poky/meta \
