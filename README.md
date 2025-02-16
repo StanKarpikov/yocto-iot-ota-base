@@ -45,3 +45,15 @@ EOF
 # Reload AppArmor Profile
 sudo apparmor_parser -r /etc/apparmor.d/bitbake
 ```
+
+## Show Dependencies
+
+```bash
+# Show Recipes
+bitbake-layers show-recipes
+# Then
+bitbake -g core-image-minimal -u taskexp
+
+# List packages to build
+bitbake -g core-image-minimal && cat pn-buildlist | grep -ve "native" | sort | uniq
+```

@@ -3,3 +3,6 @@ downloads
 sstate-cache
 tmp
 *.log
+tmp-glibc
+task-depends.dot
+pn-buildlist
