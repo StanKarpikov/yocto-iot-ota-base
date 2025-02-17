@@ -2,15 +2,7 @@
 
 See <https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html>
 
-## Steps Before Running Build
-
-```bash
-source poky/oe-init-build-env .
-```
-
-Initialise build environment:
-
-## Initialisa New Confguration
+## Initialise New Confguration
 
 ```bash
 source poky/oe-init-build-env .
@@ -56,4 +48,38 @@ bitbake -g core-image-minimal -u taskexp
 
 # List packages to build
 bitbake -g core-image-minimal && cat pn-buildlist | grep -ve "native" | sort | uniq
+```
+
+## Run
+
+### Steps Before Running Build
+
+```bash
+source poky/oe-init-build-env .
+
+export YOCTO_CACHE_DIR="."
+# export SSTATE_DIR="$YOCTO_CACHE_DIR/sstate-cache"
+# export TMPDIR="$YOCTO_CACHE_DIR/tmp"
+export DL_DIR="$YOCTO_CACHE_DIR/downloads"
+export BB_ENV_PASSTHROUGH_ADDITIONS="DL_DIR"
+
+```
+
+### Build
+
+```bash
+
+# Build
+bitbake core-image-custom
+
+# Run in Qemu
+runqemu qemux86-64 nographic
+```
+
+## Debugging
+
+### Check for Variable
+
+```bash
+bitbake -e core-image-custom | grep EXTRA_USERS_PARAMS
 ```

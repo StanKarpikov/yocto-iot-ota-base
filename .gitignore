@@ -6,3 +6,4 @@ tmp
 tmp-glibc
 task-depends.dot
 pn-buildlist
+.vscode
