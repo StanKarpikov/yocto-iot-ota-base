@@ -83,3 +83,58 @@ runqemu qemux86-64 nographic
 ```bash
 bitbake -e core-image-custom | grep EXTRA_USERS_PARAMS
 ```
+
+### Check Which Recipy Includes a Package
+
+```bash
+bitbake-layers show-recipes | grep bluez
+```
+
+### Clean
+
+```bash
+bitbake world -c cleanall --continue
+```
+
+## Freeze Package Versions
+
+```bash
+bitbake -s > package-versions.txt
+bitbake -e | grep ^SRCREV_ > srcrevs.txt
+```
+
+Add `PREFERRED_VERSION_<package>` and put in `frozen.conf`.
+
+### OPKG Ipk Package Management
+
+
+```bash
+# For example gcc
+bitbake gcc
+
+bitbake package-index
+```
+
+```bash
+cd yocto-rpi-iot-ota-base/build/tmp/deploy/images/qemux86-64/
+gunzip --force core-image-custom-qemux86-64.sdimg.gz
+IMAGE="core-image-custom-qemux86-64.sdimg"; qemu-img resize -f raw "$IMAGE" 2G
+
+qemu-system-x86_64 \
+    -m 1024 \
+    -cpu IvyBridge -machine q35,i8042=off \
+    -smp 2 \
+    -device sdhci-pci \
+    -device sd-card,drive=sdimg_drive \
+    -kernel bzImage-qemux86-64.bin \
+    -append "root=/dev/mmcblk0p2 ro console=ttyS0" \
+    -drive file=core-image-custom-qemux86-64.sdimg,if=none,format=raw,format=raw,id=sdimg_drive \
+    -net nic \
+    -serial mon:stdio \
+    -nographic
+```
+
+
+```bash
+SYSTEMD_COLORS=0 systemctl list-units --failed
+```
