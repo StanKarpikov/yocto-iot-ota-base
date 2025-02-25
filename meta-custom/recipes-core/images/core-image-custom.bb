@@ -6,7 +6,7 @@ LICENSE = "MIT"
 # TODO: Activate this in fstab
 IMAGE_FEATURES += "read-only-rootfs"
 
-IMAGE_INSTALL += " shadow-base mender-server-certificate python3-core"
+IMAGE_INSTALL += " shadow-base mender-server-certificate"
 IMAGE_INSTALL:remove = "sysvinit busybox-sysvinit"
 
 # rpi-sdimg
@@ -16,11 +16,8 @@ IMAGE_FSTYPES = "ext4 dataimg sdimg.gz tar.bz2 cpio.gz"
 INIT_MANAGER = "systemd"
 VIRTUAL-RUNTIME_init_manager = "systemd"
 
-# DISTRO_FEATURES:remove = " sysvinit"
-# Use systemd for system initialization
 DISTRO_FEATURES:append = " systemd usrmerge"
 DISTRO_FEATURES_BACKFILL_CONSIDERED:append = "sysvinit"
-# DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " sysvinit"
 VIRTUAL-RUNTIME_initscripts = "systemd-compat-units"
 VIRTUAL-RUNTIME_login_manager = "shadow-base"
 VIRTUAL-RUNTIME_dev_manager = "systemd"
@@ -54,6 +51,8 @@ MENDER_BOOT_PART = "${MENDER_STORAGE_DEVICE_BASE}1"
 MENDER_DATA_PART = "${MENDER_STORAGE_DEVICE_BASE}4"
 MENDER_ROOTFS_PART_A = "${MENDER_STORAGE_DEVICE_BASE}2"
 MENDER_ROOTFS_PART_B = "${MENDER_STORAGE_DEVICE_BASE}3"
+
+MENDER_FEATURES_DISABLE:append = " mender-growfs-data"
 
 inherit extrausers
 EXTRA_USERS_PARAMS = "usermod -p '$(openssl passwd -6 root)' root;"

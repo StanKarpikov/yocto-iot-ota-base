@@ -107,7 +107,6 @@ Add `PREFERRED_VERSION_<package>` and put in `frozen.conf`.
 
 ### OPKG Ipk Package Management
 
-
 ```bash
 # For example gcc
 bitbake gcc
@@ -116,20 +115,25 @@ bitbake package-index
 ```
 
 ```bash
-cd yocto-rpi-iot-ota-base/build/tmp/deploy/images/qemux86-64/
+cd build/tmp/deploy/images/qemux86-64/
 gunzip --force core-image-custom-qemux86-64.sdimg.gz
 IMAGE="core-image-custom-qemux86-64.sdimg"; qemu-img resize -f raw "$IMAGE" 2G
 
-qemu-system-x86_64 \
+    # -net nic \
+    # -netdev tap,id=net0,ifname=tap0,script=no,downscript=no \
+    # -netdev user,id=mynet0,net=192.168.76.0/24,dhcpstart=192.168.76.9 \
+# sudo for the network adapter
+sudo qemu-system-x86_64 \
     -m 1024 \
-    -cpu IvyBridge -machine q35,i8042=off \
+    -cpu IvyBridge \
+    -machine q35,i8042=off \
     -smp 2 \
     -device sdhci-pci \
     -device sd-card,drive=sdimg_drive \
     -kernel bzImage-qemux86-64.bin \
     -append "root=/dev/mmcblk0p2 ro console=ttyS0" \
     -drive file=core-image-custom-qemux86-64.sdimg,if=none,format=raw,format=raw,id=sdimg_drive \
-    -net nic \
+    -nic tap \
     -serial mon:stdio \
     -nographic
 ```
