@@ -55,14 +55,13 @@ bitbake -g core-image-minimal && cat pn-buildlist | grep -ve "native" | sort | u
 ### Steps Before Running Build
 
 ```bash
-source poky/oe-init-build-env .
+source tegra-demo-distro/layers/oe-init-build-env .
 
 export YOCTO_CACHE_DIR="."
 # export SSTATE_DIR="$YOCTO_CACHE_DIR/sstate-cache"
 # export TMPDIR="$YOCTO_CACHE_DIR/tmp"
 export DL_DIR="$YOCTO_CACHE_DIR/downloads"
 export BB_ENV_PASSTHROUGH_ADDITIONS="DL_DIR"
-
 ```
 
 ### Build

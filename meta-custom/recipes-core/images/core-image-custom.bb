@@ -1,4 +1,4 @@
-require recipes-core/images/core-image-minimal.bb
+require recipes-demo/images/demo-image-base.bb
 
 SUMMARY = "Minimal image with BusyBox"
 LICENSE = "MIT"
@@ -10,7 +10,8 @@ IMAGE_INSTALL += " shadow-base mender-server-certificate"
 IMAGE_INSTALL:remove = "sysvinit busybox-sysvinit"
 
 # rpi-sdimg
-IMAGE_FSTYPES = "ext4 dataimg sdimg.gz tar.bz2 cpio.gz"
+# IMAGE_FSTYPES = "ext4 sdimg.gz tar.bz2 cpio.gz"
+IMAGE_FSTYPES = "ext4 tar.bz2 cpio.gz"
 
 # TODO: Remove systemd
 INIT_MANAGER = "systemd"
@@ -36,8 +37,8 @@ ARTIFACTIMG_FSTYPE = "ext4"
 MENDER_STORAGE_TOTAL_SIZE_MB = "1024"
 
 # Root filesystem size (active/passive partitions)
-MENDER_ROOTFS_PART_A_SIZE_MB = "256"
-MENDER_ROOTFS_PART_B_SIZE_MB = "256"
+MENDER_ROOTFS_PART_A_SIZE_MB = "512"
+MENDER_ROOTFS_PART_B_SIZE_MB = "512"
 
 # Boot partition size
 MENDER_BOOT_PART_SIZE_MB = "64"
