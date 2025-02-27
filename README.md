@@ -119,14 +119,13 @@ bitbake gcc
 bitbake package-index
 ```
 
+### Running a x86-64 Image
+
 ```bash
 cd build/tmp/deploy/images/qemux86-64/
 gunzip --force core-image-custom-qemux86-64.sdimg.gz
 IMAGE="core-image-custom-qemux86-64.sdimg"; qemu-img resize -f raw "$IMAGE" 2G
 
-    # -net nic \
-    # -netdev tap,id=net0,ifname=tap0,script=no,downscript=no \
-    # -netdev user,id=mynet0,net=192.168.76.0/24,dhcpstart=192.168.76.9 \
 # sudo for the network adapter
 sudo qemu-system-x86_64 \
     -m 1024 \
@@ -143,18 +142,13 @@ sudo qemu-system-x86_64 \
     -nographic
 ```
 
+### Running an ARM64 Image
+
 /dev/nvme0n1p1   227G  121G   95G  57% /
 /dev/nvme0n1p10   63M  110K   63M   1% /boot/efi
 
 ```bash
 cd build/tmp/deploy/images/jetson-orin-nx/
-IMAGE="core-image-custom-jetson-orin-nx.sdimg"; qemu-img resize -f raw "$IMAGE" 4G
-
-    # -net nic \
-    # -netdev tap,id=net0,ifname=tap0,script=no,downscript=no \
-    # -netdev user,id=mynet0,net=192.168.76.0/24,dhcpstart=192.168.76.9 \
-
-# sudo for the network adapter
 
 sudo qemu-system-aarch64 \
     -m 2048 \
@@ -165,13 +159,21 @@ sudo qemu-system-aarch64 \
     -drive file=core-image-custom-jetson-orin-nx.sdimg,if=none,format=raw,id=nvm \
     -kernel Image \
     -append "root=/dev/nvme0n1p2 ro mminit_loglevel=4 console=ttyAMA0,115200 firmware_class.path=/etc/firmware fbcon=map:0 nospectre_bhb video=efifb:off earlycon" \
+    -nic user,model=virtio-net-pci \
     -serial mon:stdio \
     -nographic
 ```
 
--drive file=./blknvme,if=none,id=mynvme
--device nvme,drive=mynvme,serial=deadbeef,namespaces=1,lver=1,nlbaf=5,lba_index=3,mdts=10,lnum_lun=4,lnum_pln=2
-
 ```bash
 SYSTEMD_COLORS=0 systemctl list-units --failed
+```
+
+### Compile Qemu for Testing
+
+```bash
+git clone https://gitlab.com/qemu-project/qemu.git
+cd qemu
+./configure --target-list=aarch64-softmmu --enable-slirp
+make
+sudo make install
 ```
