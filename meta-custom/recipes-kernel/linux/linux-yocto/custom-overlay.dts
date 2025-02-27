@@ -1,0 +1,13 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+    fragment@0 {
+        target-path = "/";
+        __overlay__ {
+            model = "Custom Jetson Orin NX";
+            compatible = "custom\0nvidia,p3768-0000+p3767-0000\0nvidia,p3767-0000\0nvidia,tegra234";
+            serial-number = "1234567890ABCDEF\0";
+        };
+    };
+};

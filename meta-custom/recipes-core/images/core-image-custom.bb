@@ -7,7 +7,7 @@ LICENSE = "MIT"
 IMAGE_FEATURES:append = " read-only-rootfs"
 
 IMAGE_INSTALL:append = " shadow-base mender-server-certificate nvidia-kernel-oot-dtb"
-IMAGE_INSTALL:remove = "sysvinit busybox-sysvinit cuda-samples"
+IMAGE_INSTALL:remove = "sysvinit busybox-sysvinit cuda-samples kernel-module-nvme"
 
 # rpi-sdimg
 # IMAGE_FSTYPES = "ext4 sdimg.gz tar.bz2 cpio.gz"
