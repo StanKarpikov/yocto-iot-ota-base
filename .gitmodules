@@ -1,9 +1,3 @@
-[submodule "poky"]
-	path = poky
-	url = git://git.yoctoproject.org/poky
-[submodule "meta-openembedded"]
-	path = meta-openembedded
-	url = https://git.openembedded.org/meta-openembedded
 [submodule "tegra-demo-distro"]
 	path = tegra-demo-distro
 	url = https://github.com/OE4T/tegra-demo-distro.git
