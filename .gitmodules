@@ -4,3 +4,6 @@
 [submodule "meta-mender-community"]
 	path = meta-mender-community
 	url = https://github.com/Austriker/meta-mender-community.git
+[submodule "meta-mender"]
+	path = meta-mender
+	url = https://github.com/mendersoftware/meta-mender.git
