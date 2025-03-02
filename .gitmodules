@@ -1,9 +1,6 @@
 [submodule "tegra-demo-distro"]
 	path = tegra-demo-distro
 	url = https://github.com/OE4T/tegra-demo-distro.git
-[submodule "meta-mender"]
-	path = meta-mender
-	url = https://github.com/TheYoctoJester/meta-mender.git
 [submodule "meta-mender-community"]
 	path = meta-mender-community
 	url = https://github.com/Austriker/meta-mender-community.git
