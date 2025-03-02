@@ -6,7 +6,7 @@ LICENSE = "MIT"
 # TODO: Activate this in fstab
 IMAGE_FEATURES:append = " read-only-rootfs"
 
-IMAGE_INSTALL:append = " shadow-base mender-server-certificate nvidia-kernel-oot-devicetrees"
+IMAGE_INSTALL:append = " shadow-base mender-server-certificate nvidia-kernel-oot-devicetrees u-boot"
 IMAGE_INSTALL:remove = "sysvinit busybox-sysvinit cuda-samples kernel-module-nvme"
 
 IMAGE_FSTYPES = "ext4 sdimg tar.bz2 cpio.gz"

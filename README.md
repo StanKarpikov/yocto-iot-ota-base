@@ -87,6 +87,9 @@ bitbake -e core-image-custom | grep EXTRA_USERS_PARAMS
 
 ```bash
 bitbake -c menuconfig virtual/kernel
+
+# Or if a component doesn't support menuconfig in Yocto
+bitbake mender-uboot -c devshell
 ```
 
 ### Check Which Recipy Includes a Package
