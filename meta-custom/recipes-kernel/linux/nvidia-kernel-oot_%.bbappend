@@ -4,7 +4,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/linux-yocto:"
 SRC_URI:append = " file://custom-overlay.dts"
 
 do_compile:append() {
-    dtc -@ -O dtb -o ${B}/kernel-devicetree/generic-dts/dtbs/custom-overlay.dtbo ${WORKDIR}/sources-unpack/custom-overlay.dts
+    dtc -@ -O dtb -o ${B}/kernel-devicetree/generic-dts/dtbs/custom-overlay.dtbo ${WORKDIR}/custom-overlay.dts
 }
 
 do_sign_dtbs:append() {

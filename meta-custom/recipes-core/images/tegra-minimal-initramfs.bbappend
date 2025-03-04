@@ -1,1 +1,0 @@
-PACKAGE_INSTALL:remove = " kernel-module-nvme "

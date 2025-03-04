@@ -96,6 +96,9 @@ bitbake mender-uboot -c devshell
 
 ```bash
 bitbake-layers show-recipes | grep bluez
+
+# Which package includes a file
+oe-pkgdata-util find-path /boot/efi/bootaa64.efi
 ```
 
 ### Clean
@@ -151,20 +154,54 @@ sudo qemu-system-x86_64 \
 /dev/nvme0n1p10   63M  110K   63M   1% /boot/efi
 
 ```bash
-cd build/tmp/deploy/images/jetson-orin-nx/
+cd build/tmp/deploy/images/p3768-0000-p3767-0000/
 
+# Boot using initrd
+
+MACHINE=p3768-0000-p3767-0000
+gunzip -k tegra-minimal-initramfs-$MACHINE.cpio.gz
 sudo qemu-system-aarch64 \
     -m 2048 \
     -cpu cortex-a76 \
     -machine virt,highmem=off \
-    -smp 8 \
+    -smp 1 \
     -device nvme,serial=deadbeef,drive=nvm \
-    -drive file=core-image-custom-jetson-orin-nx.sdimg,if=none,format=raw,id=nvm \
+    -drive file=core-image-custom-$MACHINE.sdimg,if=none,format=raw,id=nvm \
     -kernel Image \
-    -append "root=/dev/nvme0n1p2 ro mminit_loglevel=4 console=ttyAMA0,115200 firmware_class.path=/etc/firmware fbcon=map:0 nospectre_bhb video=efifb:off earlycon" \
+    -initrd tegra-minimal-initramfs-$MACHINE.cpio \
+    -append "root=/dev/nvme0n1p2 mminit_loglevel=4 console=ttyAMA0,115200 fbcon=map:0 nospectre_bhb video=efifb:off earlycon" \
     -nic user,model=virtio-net-pci \
     -serial mon:stdio \
     -nographic
+ 
+# EFI (doesn't work)
+# get EFI EDK2 firmware from https://packages.debian.org/sid/qemu-efi-aarch64
+# see https://www.kraxel.org/blog/2022/05/edk2-virt-quickstart/
+dd of="QEMU_EFI-pflash.raw" if="/dev/zero" bs=1M count=64
+dd of="QEMU_EFI-pflash.raw" if="AAVMF_CODE.no-secboot.fd" conv=notrunc
+dd of="QEMU_VARS-pflash.raw" if="/dev/zero" bs=1M count=64
+dd of="QEMU_VARS-pflash.raw" if="AAVMF_VARS.fd" conv=notrunc
+
+MACHINE=p3768-0000-p3767-0000
+SDIMAGE=core-image-custom-$MACHINE.sdimg
+ESPIMAGE=tegra-espimage-$MACHINE.esp
+qemu-system-aarch64 \
+    -m 2048 \
+    -cpu cortex-a76 \
+    -machine virt,highmem=off,pflash0=code,pflash1=vars \
+    -smp 8 \
+    -device nvme,serial=aaaaaaa0,drive=nvm_boot \
+    -drive file=esp.img,if=none,format=raw,id=nvm_boot \
+    -device nvme,serial=aaaaaaa1,drive=nvm_main \
+    -drive file=$SDIMAGE,if=none,format=raw,id=nvm_main \
+    -device nvme,serial=aaaaaaa3,drive=nvm_1 \
+    -drive file=boot.img,if=none,format=raw,id=nvm_1 \
+    -device nvme,serial=aaaaaaa2,drive=nvm_2 \
+    -drive file=initrd-flash.img,if=none,format=raw,id=nvm_2 \
+    -drive if=none,id=code,format=raw,readonly=on,file=QEMU_EFI-pflash.raw \
+    -drive if=none,id=vars,format=raw,file=QEMU_VARS-pflash.raw \
+    -nic user,model=virtio-net-pci \
+    -serial mon:stdio
 ```
 
 ```bash
@@ -179,4 +216,32 @@ cd qemu
 ./configure --target-list=aarch64-softmmu --enable-slirp
 make
 sudo make install
+```
+
+### Build UEFI for Jetson
+
+See https://forums.developer.nvidia.com/t/building-edk2-firmware-for-tegra-with-gcc-12-2/227757/5
+
+```bash
+mkdir edkrepo
+cd edkrepo/
+wget https://github.com/tianocore/edk2-edkrepo/releases/download/edkrepo-v2.1.2/edkrepo-2.1.2.tar.gz
+tar xpvf edkrepo-2.1.2.tar.gz
+python3.10 -m venv venv
+sudo su
+. ./venv/bin/activate
+pip install setuptools
+./install.py --verbose
+edkrepo manifest-repos add nvidia https://github.com/NVIDIA/edk2-edkrepo-manifest.git main nvidi
+edkrepo clone nvidia-uefi NVIDIA-Jetson jetson-r35.1
+cd nvidia-uefi/
+cat edk2-nvidia/Platform/NVIDIA/Jetson/Build.md 
+apt install -y python3-virtualenv gcc-aarch64-linux-gnu
+edk2-nvidia/Platform/NVIDIA/Jetson/build.sh
+# If fails:
+venv/bin/pip install setuptools
+
+rm -r venv
+python3.10 -m venv venv
+/venv/bin/pip install --upgrade -r edk2/pip-requirements.txt
 ```
