@@ -168,7 +168,7 @@ IMAGE=core-image-jetson-mender-iot-base
 MACHINE=p3768-0000-p3767-0000
 
 cd build/tmp/deploy/images/$MACHINE/
-gunzip -k tegra-minimal-initramfs-$MACHINE.cpio.gz
+gunzip -kf tegra-minimal-initramfs-$MACHINE.cpio.gz
 qemu-system-aarch64 \
     -m 2048 \
     -cpu cortex-a76 \
