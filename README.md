@@ -90,6 +90,9 @@ bitbake-layers show-recipes | grep bluez
 
 # Which package includes a file
 oe-pkgdata-util find-path /boot/efi/bootaa64.efi
+
+# List files shipped by a package
+oe-pkgdata-util list-pkg-files libserial
 ```
 
 ### Clean
