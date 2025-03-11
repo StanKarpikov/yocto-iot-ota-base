@@ -127,6 +127,34 @@ bitbake package-index
 SYSTEMD_COLORS=0 systemctl list-units --failed
 ```
 
+### Modify a Recipe
+
+see [https://wiki.yoctoproject.org/wiki/TipsAndTricks/Patching_the_source_for_a_recipe](https://wiki.yoctoproject.org/wiki/TipsAndTricks/Patching_the_source_for_a_recipe)
+
+```bash
+# Example for openssh
+devtool modify openssh
+cd workspace/<source folder>
+
+# To test:
+# devtool build openssh
+
+# Change and commit:
+git add .
+git commit -m "New Patch"
+
+# Generate patch
+devtool finish openssh meta-<layer name>
+
+# Or to generate bbappend file
+evtool update-recipe -a meta-<layer name> openssh
+
+# Or to update the original recipe
+devtool update-recipe openssh
+
+# Remove workspace dir from the layer conf files
+```
+
 ## Running in Qemu
 
 ### Compile Qemu for Testing
