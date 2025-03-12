@@ -8,3 +8,4 @@ task-depends.dot
 pn-buildlist
 .vscode
 *.lock
+.idea

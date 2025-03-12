@@ -1,0 +1,10 @@
+.env
+.venv
+.idea
+*.swp
+__pycache__
+.cdk.staging
+cdk.out
+.pytest_cache
+*.egg-info
+package-lock.json
