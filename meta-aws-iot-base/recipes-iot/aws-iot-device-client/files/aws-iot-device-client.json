@@ -1,0 +1,49 @@
+{
+  "endpoint": "example.iot.eu-west-1.amazonaws.com",
+  "cert": "/etc/aws_cert/device.pem.crt",
+  "key": "/etc/aws_cert/private.pem.key",
+  "root-ca": "/etc/aws_cert/AmazonRootCA1.pem",
+  "thing-name": "12345",
+  "logging": {
+    "enable-sdk-logging": true,
+    "level": "INFO",
+    "type": "STDOUT",
+    "file": ""
+  },
+  "jobs": {
+    "enabled": false,
+    "handler-directory": ""
+  },
+  "tunneling": {
+    "enabled": true
+  },
+  "device-defender": {
+    "enabled": false,
+    "interval": 300
+  },
+  "fleet-provisioning": {
+    "enabled": true,
+    "template-name": "IoTProvisioningTemplate",
+    "template-parameters": "{\"SerialNumber\":\"12345\"}",
+    "csr-file": "",
+    "device-key": ""
+  },
+  "samples": {
+    "pub-sub": {
+      "enabled": false,
+      "publish-topic": "",
+      "publish-file": "",
+      "subscribe-topic": "",
+      "subscribe-file": ""
+    }
+  },
+  "config-shadow": {
+    "enabled": false
+  },
+  "sample-shadow": {
+    "enabled": false,
+    "shadow-name": "",
+    "shadow-input-file": "",
+    "shadow-output-file": ""
+  }
+}
