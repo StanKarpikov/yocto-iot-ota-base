@@ -26,6 +26,12 @@ Once the virtual environment is activated, install dependencies:
 pip install -r requirements.txt
 ```
 
+## Bootstrap
+
+```bash
+cdk bootstrap
+```
+
 ## Generate CloudFormation Template
 
 ```bash
@@ -56,7 +62,9 @@ sudo apt update && sudo apt install npm
 # Check your current Node version: 
 node -v 
 # Install n package using the following command:
-npm install -g n
+sudo npm cache clean -f
+sudo npm install -g n
+sudo n stable
 
 # This command will install a tool called "n" which you can use to update Node easily.
 # To update Node, run the following command in your terminal:           
@@ -66,3 +74,33 @@ n latest
 # Now you can verify that your update is complete by rechecking your Node version:  
 node -v
 ```
+
+AWS CLI:
+
+```bash
+npm install -g aws-cdk
+```
+
+### Deploy
+
+```bash
+nano ~/.aws/credentials
+
+# Add IAM credentials under [profile]
+
+export AWS_PROFILE=profile
+```
+
+The account needs the following policies attached:
+
+```
+AmazonDynamoDBFullAccess
+AmazonSSMFullAccess
+AWSCloudFormationFullAccess
+AWSLambda_FullAccess
+IAMFullAccess
+AmazonS3FullAccess
+
+Elastic-Container-Registry
+```
+

@@ -9,3 +9,4 @@ pn-buildlist
 .vscode
 *.lock
 .idea
+meta-aws-iot-base/aws-cdk/venv10

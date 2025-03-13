@@ -1,23 +1,14 @@
 import os
-from aws_cdk import (
-    Stack,
-    Duration,
-    aws_iam as _iam,
-    aws_dynamodb as _dynamodb,
-    aws_lambda as _lambda,
-    aws_iot_alpha as _iot_alpha,
-    aws_secretsmanager as _secretsmanager,
-    aws_iot_actions_alpha as _aws_iot_actions_alpha
-)
-
+from aws_cdk import Stack, Duration, aws_iam as _iam, aws_dynamodb as _dynamodb, aws_lambda as _lambda, aws_iot_alpha as _iot_alpha, aws_secretsmanager as _secretsmanager, aws_iot_actions_alpha as _aws_iot_actions_alpha
 from constructs import Construct
-from lambda_code.config import *
+from config import *
 
 
 class Control(Stack):
 
     def __init__(self, scope: Construct, construct_id: str) -> None:
         super().__init__(scope, construct_id)
+        self.dir_name = os.path.dirname(os.path.realpath(__file__))
         self._define_statements()
         ids_table = _dynamodb.Table(self,
                                     id=DEVICES_TABLE_NAME_ID,
@@ -64,8 +55,7 @@ class Control(Stack):
 
     def _create_lambda_user(self):
         self.lambda_user = _iam.User(self, LAMBDA_USER)
-        self.lambda_user.add_managed_policy(self.ota_user_policy)
-        self.lambda_access_key = _iam.CfnAccessKey(self, LAMBDA_ACCESS_KEY_SECRET,
+        self.lambda_access_key = _iam.CfnAccessKey(self, LAMBDA_ACCESS_KEY,
                                                    user_name=self.lambda_user.user_name)
         self.lambda_access_key_secret = _secretsmanager.Secret(
             self,
@@ -77,20 +67,20 @@ class Control(Stack):
 
     def _define_requests_lambda(self):
         self._requests_lambda = _lambda.Function(
-            self, self.LAMBDA_REQUESTS,
-            code=_lambda.Code.from_asset(os.path.join(self.dirname, "lambda_code")),
-            runtime=_lambda.Runtime.PYTHON_3_12(),
+            self, LAMBDA_REQUESTS,
+            code=_lambda.Code.from_asset(os.path.join(self.dir_name, "lambda_code")),
+            runtime=_lambda.Runtime.PYTHON_3_12,
             handler="lambda_code.lambda_function.lambda_handler",
             environment={PERMANENT_ACCESS_KEY_ID_ENV: self.lambda_access_key.ref,
                          PERMANENT_ACCESS_KEY_SECRET_NAME_ENV: self.lambda_access_key_secret.secret_name,
-                         IDS_TABLE_NAME_ENV: self.OTA_TABLE_NAME},
+                         DEVICES_TABLE_NAME_ENV: DEVICES_TABLE_NAME},
             timeout=Duration.seconds(20))
 
-        self.requests_lambda.add_to_role_policy(self._statements['iot_publish'])
-        self.requests_lambda.add_to_role_policy(self._statements['get_secret'])
-        self.requests_lambda.add_to_role_policy(self._statements['dynamodb_get_put'])
+        self._requests_lambda.add_to_role_policy(self._statements['iot_publish'])
+        self._requests_lambda.add_to_role_policy(self._statements['get_secret'])
+        self._requests_lambda.add_to_role_policy(self._statements['dynamodb_get_put'])
 
         _iot_alpha.TopicRule(self, "TopicRuleRequests",
                              sql=_iot_alpha.IotSql.from_string_as_ver20160323(
                                  f"SELECT * FROM '{REQUESTS_TOPIC}'"),
-                             actions=[_aws_iot_actions_alpha.LambdaFunctionAction(self.requests_lambda)])
+                             actions=[_aws_iot_actions_alpha.LambdaFunctionAction(self._requests_lambda)])

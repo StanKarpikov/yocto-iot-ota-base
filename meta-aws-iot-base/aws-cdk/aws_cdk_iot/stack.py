@@ -1,12 +1,12 @@
-from aws_cdk import core as cdk
-
+import aws_cdk
 from control import control
+from constructs import Construct
 from provisioning import provisioning
 
 
-class IoTStack(cdk.Stack):
+class IoTStack(aws_cdk.Stack):
     def __init__(self,
-                 scope: cdk.Construct,
+                 scope: Construct,
                  construct_id: str,
                  description: str,
                  **kwargs) -> None:

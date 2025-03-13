@@ -19,7 +19,10 @@ setuptools.setup(
     packages=setuptools.find_packages(where="aws_cdk_iot"),
 
     install_requires=[
-        "aws-cdk.core==1.41.0",
+        "aws-cdk-lib==2.183.0",
+        "constructs",
+        "aws-cdk.aws-iot-alpha",
+        "aws-cdk.aws-iot-actions-alpha"
     ],
 
     python_requires=">=3.6",
@@ -36,6 +39,8 @@ setuptools.setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.12",
 
         "Topic :: Software Development :: Code Generators",
         "Topic :: Utilities",

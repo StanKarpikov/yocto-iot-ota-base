@@ -7,3 +7,6 @@
 [submodule "meta-mender"]
 	path = meta-mender
 	url = https://github.com/mendersoftware/meta-mender.git
+[submodule "meta-aws"]
+	path = meta-aws
+	url = https://github.com/aws4embeddedlinux/meta-aws.git

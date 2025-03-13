@@ -44,7 +44,7 @@ class Provisioning(Construct):
             "template",
             provisioning_role_arn=template_role.role_arn,
             description="A template provide production certificates to devices",
-            template_body=template_document,
+            template_body=json.dumps(template_document),
             enabled=True,
             template_name=PROVISIONING_TEMPLATE_NAME)
 
