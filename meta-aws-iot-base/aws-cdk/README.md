@@ -1,4 +1,4 @@
-# AWS CDK Condifugration for IoT
+# AWS CDK Configuration for IoT
 
 This project follows a standard Python setup with a virtual environment (.venv). If the virtual environment isn't created automatically, you can set it up manually.
 
