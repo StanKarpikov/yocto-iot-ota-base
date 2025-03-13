@@ -70,7 +70,7 @@ class Control(Stack):
             self, LAMBDA_REQUESTS,
             code=_lambda.Code.from_asset(os.path.join(self.dir_name, "lambda_code")),
             runtime=_lambda.Runtime.PYTHON_3_12,
-            handler="lambda_code.lambda_function.lambda_handler",
+            handler="lambda_function.lambda_handler",
             environment={PERMANENT_ACCESS_KEY_ID_ENV: self.lambda_access_key.ref,
                          PERMANENT_ACCESS_KEY_SECRET_NAME_ENV: self.lambda_access_key_secret.secret_name,
                          DEVICES_TABLE_NAME_ENV: DEVICES_TABLE_NAME},

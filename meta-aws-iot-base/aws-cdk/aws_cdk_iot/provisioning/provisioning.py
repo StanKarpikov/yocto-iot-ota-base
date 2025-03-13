@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 from aws_cdk import aws_iam as iam
 from aws_cdk import aws_iot as iot
+from aws_cdk import Duration, aws_lambda as _lambda
 from constructs import Construct
 
 from config import *
@@ -39,9 +40,22 @@ class Provisioning(Construct):
 
         template_document = self._get_document(package_dir / "provisioning_template.json",
                                                {"$POLICY_NAME": PRODUCTION_POLICY_NAME})
+
+        pre_provisioning_lambda = _lambda.Function(
+            self, LAMBDA_REQUESTS,
+            code=_lambda.Code.from_asset(os.path.join(str(package_dir), "pre_prov_lambda_code")),
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="lambda_function.lambda_handler",
+            environment={},
+            timeout=Duration.seconds(20))
+        pre_provisioning_lambda.grant_invoke(iam.ServicePrincipal("iot.amazonaws.com"))
+
         iot.CfnProvisioningTemplate(
             self,
             "template",
+            pre_provisioning_hook=iot.CfnProvisioningTemplate.ProvisioningHookProperty(
+                target_arn=pre_provisioning_lambda.function_arn,
+            ),
             provisioning_role_arn=template_role.role_arn,
             description="A template provide production certificates to devices",
             template_body=json.dumps(template_document),
