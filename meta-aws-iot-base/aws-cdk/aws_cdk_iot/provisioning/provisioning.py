@@ -38,7 +38,7 @@ class Provisioning(Construct):
             managed_policies=[registration_policy])
 
         template_document = self._get_document(package_dir / "provisioning_template.json",
-                                               {"$POLICY_NAME": CLAIM_POLICY_NAME})
+                                               {"$POLICY_NAME": PRODUCTION_POLICY_NAME})
         iot.CfnProvisioningTemplate(
             self,
             "template",

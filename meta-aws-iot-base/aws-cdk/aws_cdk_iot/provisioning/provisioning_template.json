@@ -36,14 +36,13 @@
           "Fn::Join": [
             "",
             [
-              "fp_demo_",
+              "",
               {
                 "Ref": "SerialNumber"
               }
             ]
           ]
-        },
-        "ThingTypeName": "fp_demo_things"
+        }
       },
       "Type": "AWS::IoT::Thing"
     }
