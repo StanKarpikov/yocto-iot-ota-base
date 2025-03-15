@@ -8,7 +8,7 @@ fi
 # export TMPDIR="$YOCTO_CACHE_DIR/tmp"
 export DL_DIR="$YOCTO_CACHE_DIR/downloads"
 
-export MACHINE="raspberrypi4"
+export MACHINE="raspberrypi4-64"
 export DISTRO="distro-raspberrypi-mender-iot-base"
 export JETSON_LAYERS_ENABLED="0"
 export RASPBERRYPI_LAYERS_ENABLED="1"
