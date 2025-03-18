@@ -7,13 +7,8 @@ INHERIT += "rpi-update-firmware"
 
 IMAGE_FEATURES:append = " read-only-rootfs"
 
-IMAGE_INSTALL:append = " shadow-base mender-server-certificate pstree"
+IMAGE_INSTALL:append = " shadow-base mender-server-certificate"
 IMAGE_INSTALL:remove = "sysvinit busybox-sysvinit"
-
-HDMI_GROUP = "1"
-HDMI_MODE = "4"
-RPI_USE_U_BOOT = "1"
-ENABLE_UART = "1"
 
 # IMAGE_FSTYPES:pn-${INITRAMFS_IMAGE} = "${INITRAMFS_FSTYPES}"
 #  tar.bz2 cpio.gz
