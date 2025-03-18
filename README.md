@@ -83,6 +83,8 @@ bitbake -c menuconfig virtual/kernel
 bitbake mender-uboot -c devshell
 ```
 
+For modifications see [https://wiki.koansoftware.com/index.php/Modify_the_linux_kernel_with_configuration_fragments_in_Yocto](https://wiki.koansoftware.com/index.php/Modify_the_linux_kernel_with_configuration_fragments_in_Yocto)
+
 ### Check Which Recipy Includes a Package
 
 ```bash

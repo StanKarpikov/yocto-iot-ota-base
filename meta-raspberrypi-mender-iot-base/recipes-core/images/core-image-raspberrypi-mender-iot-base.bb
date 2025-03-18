@@ -3,15 +3,21 @@ require recipes-core/images/core-image-minimal.bb
 SUMMARY = "Minimal image for Raspberry Pi with Mender"
 LICENSE = "MIT"
 
+INHERIT += "rpi-update-firmware"
+
 IMAGE_FEATURES:append = " read-only-rootfs"
 
 IMAGE_INSTALL:append = " shadow-base mender-server-certificate pstree"
 IMAGE_INSTALL:remove = "sysvinit busybox-sysvinit"
 
-IMAGE_FSTYPES:append = " sdimg tar.bz2 cpio.gz"
-IMAGE_FSTYPES:tegra = " sdimg tegraflash mender dataimg"
-IMAGE_FSTYPES:pn-tegra-minimal-initramfs:tegra = "${INITRAMFS_FSTYPES}"
-IMAGE_FSTYPES:pn-tegra-initrd-flash-initramfs:tegra = "${TEGRA_INITRD_FLASH_INITRAMFS_FSTYPES}"
+HDMI_GROUP = "1"
+HDMI_MODE = "4"
+RPI_USE_U_BOOT = "1"
+ENABLE_UART = "1"
+
+# IMAGE_FSTYPES:pn-${INITRAMFS_IMAGE} = "${INITRAMFS_FSTYPES}"
+#  tar.bz2 cpio.gz
+IMAGE_FSTYPES:append = " sdimg"
 
 INIT_MANAGER = "systemd"
 VIRTUAL-RUNTIME_init_manager = "systemd"
