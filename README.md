@@ -136,7 +136,7 @@ see [https://wiki.yoctoproject.org/wiki/TipsAndTricks/Patching_the_source_for_a_
 ```bash
 # Example for openssh
 devtool modify openssh
-cd workspace/<source folder>
+cd workspace/sources/openssh
 
 # To test:
 # devtool build openssh
@@ -149,7 +149,7 @@ git commit -m "New Patch"
 devtool finish openssh meta-<layer name>
 
 # Or to generate bbappend file
-evtool update-recipe -a meta-<layer name> openssh
+devtool update-recipe -a meta-<layer name> openssh
 
 # Or to update the original recipe
 devtool update-recipe openssh
